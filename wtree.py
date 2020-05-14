@@ -2,6 +2,7 @@ import os
 import sys
 
 arg_len = len(sys.argv)
+valid_opts = ['-L', '-d', '-f']
 
 def is_args_valid():
     if _is_len_valid():
@@ -11,6 +12,9 @@ def is_args_valid():
     return False
 
 _is_len_valid = lambda: arg_len < 5
+
+def print_usage(): # 기능 개발 후 최종 추가
+    print("usage: ")
 
 def parse_args():
     args = {"path": None, "opt": None, "extra": None}
@@ -57,32 +61,57 @@ def _parse_args():
 
     return path, opt, extra
 
-def print_usage(): # 기능 개발 후 최종 추가
-    print("usage: ")
+def is_each_value_valid(args):
+    path, opt, extra = args['path'], args['opt'], args['extra']
+    if _path_check(path) and _opt_check(opt) and _extra_check(opt, extra):
+        return True
+    return False
+    
+def _path_check(path):
+    if path == '.' or isinstance(path, str):
+        return True
+    return False
+
+def _opt_check(opt):
+    if opt == None or opt in valid_opts:
+        return True
+    return False
+
+def _extra_check(opt, extra):
+    try:
+        if (opt != '-L' and extra == None) or (opt == '-L' and int(extra)):
+            return True
+    except:
+        return False
+    return False
 
 if is_args_valid():
     args = parse_args()
-    print(args)
-    sys.exit() 
+    if is_each_value_valid(args):
+        pass
+        current_path = "C:\\Users\\MEMENT\\Desktop\\side_project\\study\\principle" #os.getcwd()
+        """
+        with os.scandir(current_path) as entries:
+            for entry in entries:
+                print(entry.name)
+            
+            for entry in entries:
+                if entry.is_file():
+                    print('file:' + entry.name)
+                if entry.is_dir():
+                    print('dir:' + entry.name)
+            
+        
+        for path, dirs, files in os.walk(current_path):
+            print(dirs)
+            print(path)
+            
+            #print(files)
+            print('===')
+        """
+    else:
+        print_usage()
+        
     
-    current_path = "C:\\Users\\MEMENT\\Desktop\\side_project\\study\\principle" #os.getcwd()
-    """
-    with os.scandir(current_path) as entries:
-        for entry in entries:
-            print(entry.name)
-        
-        for entry in entries:
-            if entry.is_file():
-                print('file:' + entry.name)
-            if entry.is_dir():
-                print('dir:' + entry.name)
-        
     
-    for path, dirs, files in os.walk(current_path):
-        print(dirs)
-        print(path)
-        
-        #print(files)
-        print('===')
-    """
     
