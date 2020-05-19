@@ -2,15 +2,26 @@ import os
 from modules.constants import CONNECT_CHAR, CONNECT_CHAR_MORE, CONNECT_CHAR_END, CONNECT_CHAR_ROOT
 dir_count = 0
 
-def recursive_print(path, last_dir_idx, depth = 1):    
-    print_files, print_dirs = _get_print_closures(path, last_dir_idx, depth)
-    print_files()
+def print_items(args, last_dir_idx, depth = 1):    
+    print_files, print_dirs = _get_print_closures(args, last_dir_idx, depth)
+
+    if args['opt'] == '-d':
+        #print_files = None
+        pass
+    elif args['opt'] == '-f':
+        #print_files = None
+        pass
+    elif args['opt'] == '-L':
+        pass
+
+    #print_files()
     print_dirs()
 
-def _get_print_closures(path, last_dir_idx, depth):
+def _get_print_closures(args, last_dir_idx, depth):
     (space, dspace) = (' ', '  ')
     root_char = connect_char = ''
 
+    path = args['path']
     files, dirs = _get_files_and_directories(path)
 
     def _print_file_format():
@@ -50,7 +61,8 @@ def _get_print_closures(path, last_dir_idx, depth):
 
             _print_blue(root_char + connect_char, name)
 
-            recursive_print(path + '/' + name, last_dir_idx, depth + 1)
+            args['path'] = path + '/' + name
+            print_items(args, last_dir_idx, depth + 1)
 
     return _print_file_format, _print_dir_format
 
