@@ -14,9 +14,9 @@ if is_args_valid(arg_len):
     if is_each_value_valid(args):
         current_path = "C:\\Users\\Mement\\Desktop\\side_project\\study\\principle" #os.getcwd()
         print(args['path'])          
+
         last_dir_idx = get_last_dir_index(current_path)
         recursive_print(current_path, last_dir_idx)
-        
     else:
         print_usage()
         

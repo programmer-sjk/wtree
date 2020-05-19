@@ -2,15 +2,13 @@ import os
 from modules.constants import CONNECT_CHAR, CONNECT_CHAR_MORE, CONNECT_CHAR_END, CONNECT_CHAR_ROOT
 dir_count = 0
 
+def recursive_print(path, last_dir_idx, depth = 1):    
+    files, dirs = _get_files_and_directories(path)
+    _print_file_format(files, dirs, last_dir_idx, depth)
+    _print_dir_format(dirs, last_dir_idx, depth, path)
 
-
-
-def recursive_print(path, last_dir_idx, depth = 1):
-    global dir_count
-    (space, dspace) = (' ', '  ')
-    (files, dirs) = ([], [])
-    root_char = connect_char = ''
-    
+def _get_files_and_directories(path):
+    files, dirs = ([] for i in range(2))
 
     with os.scandir(path) as entries:
         for idx, entry in enumerate(entries):
@@ -18,6 +16,12 @@ def recursive_print(path, last_dir_idx, depth = 1):
                 files.append(entry.name)
             if entry.is_dir():
                 dirs.append(entry.name)
+    return files, dirs
+
+def _print_file_format(files, dirs, last_dir_idx, depth):
+    global dir_count
+    (space, dspace) = (' ', '  ')
+    root_char = connect_char = ''
 
     for idx, name in enumerate(files):
         if depth == 1:
@@ -36,9 +40,12 @@ def recursive_print(path, last_dir_idx, depth = 1):
             (root_char, connect_char) = (CONNECT_CHAR_ROOT, dspace * depth + CONNECT_CHAR_END)
         else:
             (root_char, connect_char) = (CONNECT_CHAR_ROOT, dspace * depth + CONNECT_CHAR_MORE)
-
         print(root_char + connect_char + name)
 
+def _print_dir_format(dirs, last_dir_idx, depth, path):
+    global dir_count
+    (space, dspace) = (' ', '  ')
+    root_char = connect_char = ''
 
     for idx, name in enumerate(dirs):
         if depth == 1:
@@ -50,14 +57,13 @@ def recursive_print(path, last_dir_idx, depth = 1):
         elif idx == 0:
             (root_char, connect_char) = (CONNECT_CHAR_ROOT, dspace * depth + CONNECT_CHAR_END)    
         else:
-            (root_char, connect_char) = (CONNECT_CHAR_MORE, CONNECT_CHAR * depth)    
-            
-        
-        print_blue(root_char + connect_char, name)
-        depth = depth + 1
-        recursive_print(path + '/' + name, last_dir_idx, depth)
-        depth = depth - 1
+            (root_char, connect_char) = (CONNECT_CHAR_MORE, CONNECT_CHAR * depth)
 
-def print_blue(plain, dirname):
+        _print_blue(root_char + connect_char, name)
+
+        recursive_print(path + '/' + name, last_dir_idx, depth + 1)
+
+
+def _print_blue(plain, dirname):
     (BLUE_COLOR, END_COLOR) = ('\033[94m', '\033[0m')
     print(plain + BLUE_COLOR + dirname + END_COLOR)   
