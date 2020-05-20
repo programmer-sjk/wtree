@@ -3,19 +3,29 @@ from modules.constants import CONNECT_CHAR, CONNECT_CHAR_MORE, CONNECT_CHAR_END,
 dir_count = 0
 
 def print_items(args, last_dir_idx, depth = 1):    
+
+    if args['opt'] == '-L':
+        if depth > int(args['extra']):
+            return None
+
     print_files, print_dirs = _get_print_closures(args, last_dir_idx, depth)
 
-    if args['opt'] == '-d':
-        #print_files = None
-        pass
-    elif args['opt'] == '-f':
-        #print_files = None
-        pass
-    elif args['opt'] == '-L':
-        pass
+    file_flag = dir_flag = None
 
-    #print_files()
-    print_dirs()
+    if args['opt'] == '-d':
+        dir_flag = True
+    elif args['opt'] == '-f':
+        file_flag = True
+    elif args['opt'] == '-L':
+        file_flag = dir_flag = True
+    else:
+        file_flag = dir_flag = True
+
+    if file_flag:
+        print_files()
+
+    if dir_flag:
+        print_dirs()
 
 def _get_print_closures(args, last_dir_idx, depth):
     (space, dspace) = (' ', '  ')
