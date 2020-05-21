@@ -54,29 +54,51 @@ def _get_print_closures(args, last_dir_idx, depth):
             print(root_char + connect_char + name)
 
     def _print_dir_format(parent_dir_is_last):
-        global dir_count
         for idx, name in enumerate(dirs):
-            if depth == 1:
-                if idx + 1 == last_dir_idx:
-                    root_char = END_CHAR
-                else:
-                    root_char = CONNECT_CHAR
 
-                connect_char = _get_connect_char(depth, False)
-                dir_count = dir_count + 1
-            else:
-                root_char = VERTICAL_CHAR
-                connect_char = _get_connect_char(depth, parent_dir_is_last)
+            root_char = _get_root_char(idx)
+            connect_char = _get_connect_char(idx, parent_dir_is_last)
 
-                if idx + 1 == len(dirs):
-                    connect_char = connect_char + END_CHAR
-                else:
-                    connect_char = connect_char + CONNECT_CHAR                
-             
             _print_blue(root_char + connect_char, name)
 
             args['path'] = path + '/' + name
             print_items(args, last_dir_idx, depth + 1, idx + 1 == len(dirs))
+
+    def _get_root_char(index):
+        global dir_count
+        if depth == 1:
+            if _is_last_directory(index, last_dir_idx):
+                root_char = END_CHAR
+            else:
+                root_char = CONNECT_CHAR
+            dir_count = dir_count + 1
+        else:
+            root_char = VERTICAL_CHAR
+        return root_char
+
+    def _get_connect_char(index, parent_dir_is_last):
+        if depth == 1:
+            return HORIZEN_CHAR * depth
+        else:
+            connect_char = _make_connect_char(parent_dir_is_last)
+            if _is_last_directory(index, len(dirs)):
+                return connect_char + END_CHAR
+            else:
+                return connect_char + CONNECT_CHAR
+            
+    def _make_connect_char(parent_dir_is_last):
+        ret = dspace = '  '
+        
+        count = parent_dir_is_last and depth - 3 or depth - 2
+        if depth == 3:
+            print(count , parent_dir_is_last, depth)
+        for _ in range(count): 
+            ret = ret + VERTICAL_CHAR + dspace
+        
+        if parent_dir_is_last: 
+            ret = ret + dspace
+        
+        return ret
 
     return _print_file_format, _print_dir_format
 
@@ -91,23 +113,8 @@ def _get_files_and_directories(path):
                 dirs.append(entry.name)
     return files, dirs
 
-def _get_connect_char(depth, parent_dir_is_last):
-    if depth == 1:
-        return HORIZEN_CHAR* depth
-    else:
-        return _make_connect_char(depth, parent_dir_is_last)
-
-def _make_connect_char(depth, parent_dir_is_last):
-    ret = dspace = '  '
-    
-    count = parent_dir_is_last and depth - 3 or depth - 2
-    for _ in range(count): 
-        ret = ret + '│' + dspace
-    
-    if parent_dir_is_last: 
-        ret = ret + dspace    
-    
-    return ret
+def _is_last_directory(index, dir_all_count):
+    return index + 1 == dir_all_count
 
 def _print_blue(plain, dirname):
     (BLUE_COLOR, END_COLOR) = ('\033[94m', '\033[0m')
