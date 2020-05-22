@@ -13,7 +13,7 @@ if is_args_valid(arg_len):
     if is_each_value_valid(args):
         print(args['path'])
         
-        args['path'] = "C:\\Users\\Mement\\Desktop\\side_project\\study\\principle" #os.getcwd()
+        args['path'] = "C:\\Users\\User\\Desktop\\side_project\\study\\principle" #os.getcwd()
         last_dir_idx = get_last_dir_index(args['path'])
         print_items(args, last_dir_idx)
     else:
