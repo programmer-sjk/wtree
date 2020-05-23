@@ -94,9 +94,8 @@ def _get_print_closures(args, last_dir_idx, depth):
         count = depth - 2
 
         if depth > 2:
-  #          print(parents_last_infoes, count)
-            for parent_info in parents_last_infoes[:-1]:
-                if parent_info:
+            for parent_info in parents_last_infoes[2:]:
+                if not parent_info:
                     ret = ret + VERTICAL_CHAR + dspace #+ str(parent_info)
                 else:
                     ret = ret + dspace #+ str(parent_info)
