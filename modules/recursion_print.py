@@ -21,7 +21,7 @@ def print_items(args, last_dir_idx, depth = 1, parents_last_infoes = [False]):
         file_flag = dir_flag = True
 
     if file_flag:
-        print_files()
+        print_files(parents_last_infoes)
 
     if dir_flag:
         print_dirs(parents_last_infoes)
@@ -33,32 +33,18 @@ def _get_print_closures(args, last_dir_idx, depth):
     path = args['path']
     files, dirs = _get_files_and_directories(path)
 
-    def _print_file_format():
+    def _print_file_format(parents_last_infoes):
         global dir_count
         for idx, name in enumerate(files):
-            if depth == 1:
-                (root_char, connect_char) = (CONNECT_CHAR, HORIZEN_CHAR* depth)
-            elif dir_count == last_dir_idx:
-                if len(files) == 1 or idx + 1== len(files):
-                    (root_char, connect_char) = (space, dspace * depth + END_CHAR)
-                else:
-                    (root_char, connect_char) = (space, dspace * depth + CONNECT_CHAR)
-            elif idx == 0:
-                if len(files) == 1:
-                    (root_char, connect_char) = (VERTICAL_CHAR, dspace * depth + END_CHAR)
-                else:
-                    (root_char, connect_char) = (VERTICAL_CHAR, dspace * depth + CONNECT_CHAR)
-            elif len(dirs) == 0 and idx + 1== len(files):
-                (root_char, connect_char) = (VERTICAL_CHAR, dspace * depth + END_CHAR)
-            else:
-                (root_char, connect_char) = (VERTICAL_CHAR, dspace * depth + CONNECT_CHAR)
+            root_char = _get_root_char(idx)
+            connect_char = _get_connect_char(idx, parents_last_infoes, len(files) + len(dirs))
             print(root_char + connect_char + name)
 
     def _print_dir_format(parents_last_infoes):
         for idx, name in enumerate(dirs):
 
             root_char = _get_root_char(idx)
-            connect_char = _get_connect_char(idx, parents_last_infoes)
+            connect_char = _get_connect_char(idx, parents_last_infoes, len(dirs))
 
             _print_blue(root_char + connect_char, name)
 
@@ -75,16 +61,18 @@ def _get_print_closures(args, last_dir_idx, depth):
             else:
                 root_char = CONNECT_CHAR
             dir_count = dir_count + 1
+        elif last_dir_idx == dir_count:
+            root_char = '' 
         else:
             root_char = VERTICAL_CHAR
         return root_char
 
-    def _get_connect_char(index, parents_last_infoes):
+    def _get_connect_char(index, parents_last_infoes, length):
         if depth == 1:
             return HORIZEN_CHAR * depth
         else:
             connect_char = _make_connect_char(parents_last_infoes)
-            if _is_last_directory(index, len(dirs)):
+            if _is_last_directory(index, length):
                 return connect_char + END_CHAR
             else:
                 return connect_char + CONNECT_CHAR
