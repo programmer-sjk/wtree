@@ -1,7 +1,10 @@
 import os
 import copy
+import colorama
 from modules.constants import HORIZEN_CHAR, VERTICAL_CHAR, CONNECT_CHAR, END_CHAR
 dir_count = 0
+
+colorama.init()
 
 def print_items(args, last_dir_idx, depth = 1, parents_last_infoes = [False]):    
 
@@ -38,7 +41,7 @@ def _get_print_closures(args, last_dir_idx, depth):
         for idx, name in enumerate(files):
             root_char = _get_root_char(idx)
             connect_char = _get_connect_char(idx, parents_last_infoes, len(files) + len(dirs))
-            print(root_char + connect_char + name)
+            print(root_char + connect_char + ' ' + name)
 
     def _print_dir_format(parents_last_infoes):
         for idx, name in enumerate(dirs):
