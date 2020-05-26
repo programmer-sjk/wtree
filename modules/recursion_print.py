@@ -31,6 +31,7 @@ def print_items(args, last_dir_idx, depth = 1, parents_last_infoes = [False]):
 
 def _get_print_closures(args, last_dir_idx, depth):
     (space, dspace) = (' ', '  ')
+    (IS_FILE, IS_DIR) = (1, 2)
     root_char = connect_char = ''
 
     path = args['path']
@@ -39,14 +40,14 @@ def _get_print_closures(args, last_dir_idx, depth):
     def _print_file_format(parents_last_infoes):
         global dir_count
         for idx, name in enumerate(files):
-            root_char = _get_root_char(idx)
+            root_char = _get_root_char(idx, IS_FILE)
             connect_char = _get_connect_char(idx, parents_last_infoes, len(files) + len(dirs))
             print(root_char + connect_char + ' ' + name)
 
     def _print_dir_format(parents_last_infoes):
         for idx, name in enumerate(dirs):
 
-            root_char = _get_root_char(idx)
+            root_char = _get_root_char(idx, IS_DIR)
             connect_char = _get_connect_char(idx, parents_last_infoes, len(dirs))
 
             _print_blue(root_char + connect_char, name)
@@ -56,19 +57,22 @@ def _get_print_closures(args, last_dir_idx, depth):
             temp.append(idx + 1 == len(dirs))
             print_items(args, last_dir_idx, depth + 1, temp)
 
-    def _get_root_char(index):
+    def _get_root_char(index, type):
         global dir_count
         if depth == 1:
-            if _is_last_directory(index, last_dir_idx):
-                root_char = END_CHAR
+            root_char = CONNECT_CHAR
+            if type == IS_DIR:
+                if _is_last_directory(index, last_dir_idx):
+                    root_char = END_CHAR
+                dir_count = dir_count + 1
             else:
-                root_char = CONNECT_CHAR
-            dir_count = dir_count + 1
+                if args['opt'] == '-f' and index + 1 == len(files):
+                    root_char = END_CHAR
         elif last_dir_idx == dir_count:
             root_char = '' 
         else:
             root_char = VERTICAL_CHAR
-        return root_char
+        return  root_char
 
     def _get_connect_char(index, parents_last_infoes, length):
         if depth == 1:
