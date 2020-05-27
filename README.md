@@ -13,8 +13,8 @@ tree command for Windows
 * python
 
 # Getting Started
-1. cd Naver_D2_Clone_Project
-2. docker-compose up -d
-3. Browser에서 localhost 접속
+1. git clone https://github.com/programmer-sjk/wtree.git
+2. cd wtree
+3. bash init.sh
 
 # example
