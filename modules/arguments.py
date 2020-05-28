@@ -11,7 +11,17 @@ def is_args_valid(arg_len):
 _is_len_valid = lambda arg_len: arg_len < 5
 
 def print_usage(): # 기능 개발 후 최종 추가
-    print("usage: ")
+    print("""usage: python wtree.py [path] [option]
+    path  Description
+    - if you dont give path argument, wtree search files and directory from current path
+    - you can give specific path to argument,          ex) python wtree.py modules
+    - you can give currnet directory path to argument, ex) python wtree.py .
+    options Description
+    -d: search only directory from path
+    -f: search only file from path
+    -L: search given depth sub dir.
+        ex) python wtree.py -L 2  - it finds file and directory in 2 depth directory from current directory
+    """)
 
 def parse_args(arg_len):
     args = {"path": None, "opt": None, "extra": None}
