@@ -11,6 +11,5 @@ pip install colorama
 
 if [ "${binary_mode}" -eq 1 ]; then
 	pip install pyinstaller
+    pyinstaller.exe wtree.py
 fi
-
-pyinstaller.exe wtree.py
