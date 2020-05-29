@@ -15,7 +15,13 @@ tree command for Windows
 # Getting Started
 1. git clone https://github.com/programmer-sjk/wtree.git
 2. cd wtree
-3. bash init.sh
+3. I give two option to execute init.sh
+* If you wanna execute <b>python script</b>, you can command <b>bash init.sh</b> <br>
+you will command like this. ex) python wtree.py [path] [option]
+ 
+* If you wanna execute <b>binary exe</b>, you can command <b>bash init.sh -b</b> <br>
+If you will add directory path to windows environment path, you use wtree everywhere.<br>
+After you command <b> bash init.sh -b </b>, you can see dist directory like below
 
 # example
 * cmder example 
