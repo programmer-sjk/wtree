@@ -18,3 +18,9 @@ tree command for Windows
 3. bash init.sh
 
 # example
+* cmder example 
+<img width="500px" src="https://user-images.githubusercontent.com/52809501/83120742-64bcdd80-a10c-11ea-9cbb-7ea3376516e8.PNG">
+
+* cmd example
+<img width="500px" src="https://user-images.githubusercontent.com/52809501/83120748-68506480-a10c-11ea-95db-a176647abb81.PNG">
+
